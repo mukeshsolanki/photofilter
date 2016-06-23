@@ -1,5 +1,27 @@
 apply plugin: 'com.android.library'
+ext {
+  bintrayRepo = 'maven'
+  bintrayName = 'photofilter'
 
+  publishedGroupId = 'com.mukesh'
+  libraryName = 'photofilter'
+  artifact = 'photofilter'
+
+  libraryDescription = 'A simple library that helps in editing bitmap images.'
+
+  siteUrl = 'https://github.com/mukeshsolanki/image-processing'
+  gitUrl = 'https://github.com/mukeshsolanki/image-processing.git'
+
+  libraryVersion = '1.0.0'
+
+  developerId = 'mukeshsolanki'
+  developerName = 'Mukesh Solanki'
+  developerEmail = 'themukeshsolanki@gmail.com'
+
+  licenseName = 'The Apache Software License, Version 2.0'
+  licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+  allLicenses = ["Apache-2.0"]
+}
 android {
   compileSdkVersion 24
   buildToolsVersion "24.0.0"
@@ -8,9 +30,7 @@ android {
     minSdkVersion 9
     targetSdkVersion 24
     versionCode 1
-    versionName "1.0"
-
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    versionName "1.0.0"
   }
   buildTypes {
     release {
@@ -22,9 +42,7 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.android.support:appcompat-v7:24.0.0'
-  testCompile 'junit:junit:4.12'
-  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-  androidTestCompile 'com.android.support.test:runner:0.5'
-  androidTestCompile 'com.android.support:support-annotations:24.0.0'
 }
+
+apply from: 'https://raw.githubusercontent.com/mukeshsolanki/library-distribution-tasks/master/install-task.gradle'
+apply from: 'https://raw.githubusercontent.com/mukeshsolanki/library-distribution-tasks/master/bintray-upload-tasks.gradle'

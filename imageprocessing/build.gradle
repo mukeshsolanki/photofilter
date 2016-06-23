@@ -42,6 +42,7 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile 'com.android.support:support-v4:24.0.0'
 }
 
 apply from: 'https://raw.githubusercontent.com/mukeshsolanki/library-distribution-tasks/master/install-task.gradle'

@@ -18,15 +18,6 @@ import java.util.Random;
 
 public class ImageProcessor {
 
-  private final int FLIP_VERTICAL = 1;
-  private final int FLIP_HORIZONTAL = 2;
-  private final double PI = 3.14159d;
-  private final double FULL_CIRCLE_DEGREE = 360d;
-  private final double HALF_CIRCLE_DEGREE = 180d;
-  private final double RANGE = 256d;
-  private final int COLOR_MIN = 0x00;
-  private final int COLOR_MAX = 0xFF;
-
   public Bitmap doHighlightImage(Bitmap originalImage, int radius, @ColorInt int highlightColor) {
     Bitmap resultingBitmap =
         Bitmap.createBitmap(originalImage.getWidth() + 96, originalImage.getHeight() + 96,
@@ -46,8 +37,9 @@ public class ImageProcessor {
   }
 
   public Bitmap doInvert(Bitmap originalImage) {
-    Bitmap resultingBitmap = Bitmap.createBitmap(originalImage.getWidth(), originalImage.getHeight(),
-        originalImage.getConfig());
+    Bitmap resultingBitmap =
+        Bitmap.createBitmap(originalImage.getWidth(), originalImage.getHeight(),
+            originalImage.getConfig());
     int A, R, G, B;
     int pixelColor;
     int height = originalImage.getHeight();
@@ -69,8 +61,9 @@ public class ImageProcessor {
     final double GS_RED = 0.299;
     final double GS_GREEN = 0.587;
     final double GS_BLUE = 0.114;
-    Bitmap resultingBitmap = Bitmap.createBitmap(originalImage.getWidth(), originalImage.getHeight(),
-        originalImage.getConfig());
+    Bitmap resultingBitmap =
+        Bitmap.createBitmap(originalImage.getWidth(), originalImage.getHeight(),
+            originalImage.getConfig());
     int A, R, G, B;
     int pixel;
     int width = originalImage.getWidth();
@@ -255,15 +248,15 @@ public class ImageProcessor {
         originalImage.getHeight(), matrix, true);
   }
 
-  public Bitmap doBrightness(Bitmap src, int value) {
-    int width = src.getWidth();
-    int height = src.getHeight();
-    Bitmap bmOut = Bitmap.createBitmap(width, height, src.getConfig());
+  public Bitmap doBrightness(Bitmap originalImage, int value) {
+    int width = originalImage.getWidth();
+    int height = originalImage.getHeight();
+    Bitmap bmOut = Bitmap.createBitmap(width, height, originalImage.getConfig());
     int A, R, G, B;
     int pixel;
     for (int x = 0; x < width; ++x) {
       for (int y = 0; y < height; ++y) {
-        pixel = src.getPixel(x, y);
+        pixel = originalImage.getPixel(x, y);
         A = Color.alpha(pixel);
         R = Color.red(pixel);
         G = Color.green(pixel);
@@ -295,6 +288,17 @@ public class ImageProcessor {
   public Bitmap applyGaussianBlur(Bitmap originalImage) {
     double[][] GaussianBlurConfig = new double[][] {
         { 1, 2, 1 }, { 2, 4, 2 }, { 1, 2, 1 }
+    };
+    ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
+    convMatrix.applyConfig(GaussianBlurConfig);
+    convMatrix.Factor = 16;
+    convMatrix.Offset = 0;
+    return ConvolutionMatrix.computeConvolution3x3(originalImage, convMatrix);
+  }
+
+  public Bitmap createShadow(Bitmap originalImage) {
+    double[][] GaussianBlurConfig = new double[][] {
+        { -1, 0, -1 }, { 0, 4, 0 }, { -1, 0, -1 }
     };
     ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
     convMatrix.applyConfig(GaussianBlurConfig);
@@ -354,14 +358,12 @@ public class ImageProcessor {
     return ConvolutionMatrix.computeConvolution3x3(originalImage, convMatrix);
   }
 
-  public Bitmap boost(Bitmap originalImage, int type, float percent) {
+  public Bitmap boost(Bitmap originalImage, int type, double percent) {
     int width = originalImage.getWidth();
     int height = originalImage.getHeight();
     Bitmap bmOut = Bitmap.createBitmap(width, height, originalImage.getConfig());
-
     int A, R, G, B;
     int pixel;
-
     for (int x = 0; x < width; ++x) {
       for (int y = 0; y < height; ++y) {
         pixel = originalImage.getPixel(x, y);
@@ -369,15 +371,19 @@ public class ImageProcessor {
         R = Color.red(pixel);
         G = Color.green(pixel);
         B = Color.blue(pixel);
-        if (type == 1) {
-          R = (int) (R * (1 + percent));
-          if (R > 255) R = 255;
-        } else if (type == 2) {
-          G = (int) (G * (1 + percent));
-          if (G > 255) G = 255;
-        } else if (type == 3) {
-          B = (int) (B * (1 + percent));
-          if (B > 255) B = 255;
+        switch (type) {
+          case ImageProcessingConstants.RED:
+            R = (int) (R * (1 + percent));
+            if (R > 255) R = 255;
+            break;
+          case ImageProcessingConstants.GREEN:
+            G = (int) (G * (1 + percent));
+            if (G > 255) G = 255;
+            break;
+          case ImageProcessingConstants.BLUE:
+            B = (int) (B * (1 + percent));
+            if (B > 255) B = 255;
+            break;
         }
         bmOut.setPixel(x, y, Color.argb(A, R, G, B));
       }
@@ -385,7 +391,7 @@ public class ImageProcessor {
     return bmOut;
   }
 
-  public Bitmap roundCorner(Bitmap originalImage, float round) {
+  public Bitmap roundCorner(Bitmap originalImage, double round) {
     int width = originalImage.getWidth();
     int height = originalImage.getHeight();
     Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -396,14 +402,15 @@ public class ImageProcessor {
     paint.setColor(Color.BLACK);
     final Rect rect = new Rect(0, 0, width, height);
     final RectF rectF = new RectF(rect);
-    canvas.drawRoundRect(rectF, round, round, paint);
+    float newRound = (float) round;
+    canvas.drawRoundRect(rectF, newRound, newRound, paint);
     paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
     canvas.drawBitmap(originalImage, rect, rect, paint);
     return result;
   }
 
-  public Bitmap mark(Bitmap originalImage, String watermark, Point location, @ColorInt int color,
-      int alpha, int size, boolean underline) {
+  public Bitmap waterMark(Bitmap originalImage, String watermark, Point location,
+      @ColorInt int color, int alpha, int size, boolean underline) {
     int w = originalImage.getWidth();
     int h = originalImage.getHeight();
     Bitmap result = Bitmap.createBitmap(w, h, originalImage.getConfig());
@@ -421,9 +428,9 @@ public class ImageProcessor {
 
   public Bitmap flip(Bitmap originalImage, int type) {
     Matrix matrix = new Matrix();
-    if (type == FLIP_VERTICAL) {
+    if (type == ImageProcessingConstants.FLIP_VERTICAL) {
       matrix.preScale(1.0f, -1.0f);
-    } else if (type == FLIP_HORIZONTAL) {
+    } else if (type == ImageProcessingConstants.FLIP_HORIZONTAL) {
       matrix.preScale(-1.0f, 1.0f);
     } else {
       return null;
@@ -438,9 +445,10 @@ public class ImageProcessor {
     int[] pix = new int[width * height];
     originalImage.getPixels(pix, 0, width, 0, 0, width, height);
     int RY, GY, BY, RYY, GYY, BYY, R, G, B, Y;
-    double angle = (PI * (double) degree) / HALF_CIRCLE_DEGREE;
-    int S = (int) (RANGE * Math.sin(angle));
-    int C = (int) (RANGE * Math.cos(angle));
+    double angle = (ImageProcessingConstants.PI * (double) degree)
+        / ImageProcessingConstants.HALF_CIRCLE_DEGREE;
+    int S = (int) (ImageProcessingConstants.RANGE * Math.sin(angle));
+    int C = (int) (ImageProcessingConstants.RANGE * Math.cos(angle));
     for (int y = 0; y < height; y++)
       for (int x = 0; x < width; x++) {
         int index = y * width + x;
@@ -479,8 +487,9 @@ public class ImageProcessor {
     for (int y = 0; y < height; ++y) {
       for (int x = 0; x < width; ++x) {
         index = y * width + x;
-        int randColor = Color.rgb(random.nextInt(COLOR_MAX), random.nextInt(COLOR_MAX),
-            random.nextInt(COLOR_MAX));
+        int randColor = Color.rgb(random.nextInt(ImageProcessingConstants.COLOR_MAX),
+            random.nextInt(ImageProcessingConstants.COLOR_MAX),
+            random.nextInt(ImageProcessingConstants.COLOR_MAX));
         pixels[index] |= randColor;
       }
     }
@@ -502,9 +511,11 @@ public class ImageProcessor {
         R = Color.red(pixels[index]);
         G = Color.green(pixels[index]);
         B = Color.blue(pixels[index]);
-        thresHold = random.nextInt(COLOR_MAX);
+        thresHold = random.nextInt(ImageProcessingConstants.COLOR_MAX);
         if (R < thresHold && G < thresHold && B < thresHold) {
-          pixels[index] = Color.rgb(COLOR_MIN, COLOR_MIN, COLOR_MIN);
+          pixels[index] =
+              Color.rgb(ImageProcessingConstants.COLOR_MIN, ImageProcessingConstants.COLOR_MIN,
+                  ImageProcessingConstants.COLOR_MIN);
         }
       }
     }
@@ -527,9 +538,11 @@ public class ImageProcessor {
         R = Color.red(pixels[index]);
         G = Color.green(pixels[index]);
         B = Color.blue(pixels[index]);
-        thresHold = random.nextInt(COLOR_MAX);
+        thresHold = random.nextInt(ImageProcessingConstants.COLOR_MAX);
         if (R > thresHold && G > thresHold && B > thresHold) {
-          pixels[index] = Color.rgb(COLOR_MAX, COLOR_MAX, COLOR_MAX);
+          pixels[index] =
+              Color.rgb(ImageProcessingConstants.COLOR_MAX, ImageProcessingConstants.COLOR_MAX,
+                  ImageProcessingConstants.COLOR_MAX);
         }
       }
     }
@@ -622,7 +635,8 @@ public class ImageProcessor {
     return bitmapWithReflection;
   }
 
-  public Bitmap replaceColor(Bitmap originalImage, int fromColor, int targetColor) {
+  public Bitmap replaceColor(Bitmap originalImage, @ColorInt int fromColor,
+      @ColorInt int targetColor) {
     if (originalImage == null) {
       return null;
     }

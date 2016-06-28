@@ -54,4 +54,14 @@ That's pretty much it and your all wrapped up.
 * applyReflection
 * replaceColor
 
-## Screen shots
+## Screenshots
+### Original
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car.png">
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull.png">
+### Result
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-applyShadingFilter1.png"><br />
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-boost2.png"><br />
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull-createContrast1.png"><br />
+<img src="https://github.com/mukeshsolanki/photofilter/blob/master/screenshots/Skull-createShadow.png"><br />
+
+You can check out more results [here](https://github.com/mukeshsolanki/photofilter/tree/master/screenshots)

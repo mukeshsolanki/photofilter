@@ -56,13 +56,13 @@ That's pretty much it and your all wrapped up.
 
 ## Screenshots
 ### Original
-![Original 1](/screenshots/Car.png)
-![Original 1](/screenshots/Skull.png)
+![Original 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car.png)
+![Original 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull.png)
 
 ### Result
-![Result 1](/screenshots/Car-applyShadingFilter1.png)
-![Result 2](/screenshots/Car-boost2.png)
-![Result 3](/screenshots/Skull-createContrast1.png)
-![Result 4](/screenshots/Skull-createShadow.png)
+![Result 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-applyShadingFilter1.png)
+![Result 2](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-boost2.png)
+![Result 3](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull-createContrast1.png)
+![Result 4](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull-createShadow.png)
 
 You can check out more results [here](https://github.com/mukeshsolanki/photofilter/tree/master/screenshots)

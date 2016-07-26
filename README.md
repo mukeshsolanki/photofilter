@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/mukeshsolanki/maven/photofilter/images/download.svg) ](https://bintray.com/mukeshsolanki/maven/photofilter/_latestVersion)
+
 # Photo Filter
 A simple easy to use library that lets you edit pictures on the fly with easy. Photo filter lets you apply a large number of filters all while maintaining maximum image quality. Supports Android 2.3 and higher.
 

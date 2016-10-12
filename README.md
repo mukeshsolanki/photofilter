@@ -1,16 +1,31 @@
-[ ![Download](https://api.bintray.com/packages/mukeshsolanki/maven/photofilter/images/download.svg) ](https://bintray.com/mukeshsolanki/maven/photofilter/_latestVersion)
-[ ![PayPal](https://img.shields.io/badge/paypal-donate-yellow.svg) ](https://www.paypal.me/mukeshsolanki)
+<h1 align="center">Photo Filter for Android</h1>
+<p align="center">
+  <a href="https://android-arsenal.com/api?level=9"> <img src="https://img.shields.io/badge/API-9%2B-blue.svg?style=flat" /></a>
+  <a href="https://jitpack.io/#mukeshsolanki/country-picker-android"> <img src="https://jitpack.io/v/mukeshsolanki/country-picker-android.svg" /></a>
+  <a href="http://android-arsenal.com/details/3/3561"> <img src="https://img.shields.io/badge/Android%20Arsenal-Country%20Picker-brightgreen.svg?style=flat" /></a>
+  <a href="https://travis-ci.org/mukeshsolanki/country-picker-android"> <img src="https://travis-ci.org/mukeshsolanki/country-picker-android.svg?branch=master" /></a>
+  <a href="https://www.paypal.me/mukeshsolanki"> <img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+  <br /><br />A simple easy to use library that lets you edit pictures on the fly with easy. Photo filter lets you apply a large number of filters all while maintaining maximum image quality. Supports Android 2.3 and higher.
+</p>
 
-# Photo Filter
-A simple easy to use library that lets you edit pictures on the fly with easy. Photo filter lets you apply a large number of filters all while maintaining maximum image quality. Supports Android 2.3 and higher.
 
 ## How to integrate into your app?
-Integrating the library into you app is extremely easy. A few changes in the build gradle and your all ready to user Runtime permissions library. Make the following changes to build.gradle inside you app.
+Integrating the library into you app is extremely easy. A few changes in the build gradle and your all ready to use the library. Make the following changes.
+
+Step 1. Add the JitPack repository to your build file. Add it in your root build.gradle at the end of repositories:
+
 ```java
-.....
+allprojects {
+  repositories {
+    ...
+    maven { url "https://jitpack.io" }
+  }
+}
+```
+Step 2. Add the dependency
+```java
 dependencies {
-  ...
-  compile 'com.mukesh:photofilter:1.0.0'
+        compile 'com.github.mukeshsolanki:photofilter:1.0.1'
 }
 ```
 

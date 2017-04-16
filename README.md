@@ -25,7 +25,7 @@ allprojects {
 Step 2. Add the dependency
 ```java
 dependencies {
-        compile 'com.github.mukeshsolanki:photofilter:1.0.1'
+        compile 'com.github.mukeshsolanki:photofilter:1.0.2'
 }
 ```
 

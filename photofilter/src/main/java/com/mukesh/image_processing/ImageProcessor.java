@@ -13,12 +13,11 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.support.annotation.ColorInt;
 import java.util.Random;
 
 public class ImageProcessor {
 
-  public Bitmap doHighlightImage(Bitmap originalImage, int radius, @ColorInt int highlightColor) {
+  public Bitmap doHighlightImage(Bitmap originalImage, int radius, int highlightColor) {
     Bitmap resultingBitmap =
         Bitmap.createBitmap(originalImage.getWidth() + 96, originalImage.getHeight() + 96,
             Bitmap.Config.ARGB_8888);
@@ -410,7 +409,7 @@ public class ImageProcessor {
   }
 
   public Bitmap waterMark(Bitmap originalImage, String watermark, Point location,
-      @ColorInt int color, int alpha, int size, boolean underline) {
+      int color, int alpha, int size, boolean underline) {
     int w = originalImage.getWidth();
     int h = originalImage.getHeight();
     Bitmap result = Bitmap.createBitmap(w, h, originalImage.getConfig());
@@ -635,8 +634,7 @@ public class ImageProcessor {
     return bitmapWithReflection;
   }
 
-  public Bitmap replaceColor(Bitmap originalImage, @ColorInt int fromColor,
-      @ColorInt int targetColor) {
+  public Bitmap replaceColor(Bitmap originalImage, int fromColor, int targetColor) {
     if (originalImage == null) {
       return null;
     }

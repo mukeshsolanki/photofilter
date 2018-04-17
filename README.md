@@ -1,9 +1,11 @@
 <h1 align="center">Photo Filter for Android</h1>
 <p align="center">
+  <a href="https://jitpack.io/#mukeshsolanki/photofilter"><img src="https://jitpack.io/v/mukeshsolanki/photofilter/month.svg"/></a>
   <a href="https://android-arsenal.com/api?level=9"> <img src="https://img.shields.io/badge/API-9%2B-blue.svg?style=flat" /></a>
   <a href="https://jitpack.io/#mukeshsolanki/photofilter"> <img src="https://jitpack.io/v/mukeshsolanki/photofilter.svg" /></a>
   <a href="https://android-arsenal.com/details/1/3802"> <img src="https://img.shields.io/badge/Android%20Arsenal-Photo%20Filter-brightgreen.svg?style=flat" /></a>
   <a href="https://travis-ci.org/mukeshsolanki/photofilter"> <img src="https://travis-ci.org/mukeshsolanki/photofilter.svg?branch=master" /></a>
+  <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
   <a href="https://www.paypal.me/mukeshsolanki"> <img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
   <br /><br />A simple easy to use library that lets you edit pictures on the fly with easy. Photo filter lets you apply a large number of filters all while maintaining maximum image quality. Supports Android 2.3 and higher.
 </p>
@@ -25,7 +27,7 @@ allprojects {
 Step 2. Add the dependency
 ```java
 dependencies {
-        compile 'com.github.mukeshsolanki:photofilter:1.0.2'
+        implementation 'com.github.mukeshsolanki:photofilter:<latest-version>'
 }
 ```
 

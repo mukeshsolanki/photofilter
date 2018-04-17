@@ -1,7 +1,7 @@
 <h1 align="center">Photo Filter for Android</h1>
 <p align="center">
   <a href="https://jitpack.io/#mukeshsolanki/photofilter"><img src="https://jitpack.io/v/mukeshsolanki/photofilter/month.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=9"> <img src="https://img.shields.io/badge/API-9%2B-blue.svg?style=flat" /></a>
+  <a href="https://android-arsenal.com/api?level=14"> <img src="https://img.shields.io/badge/API-14%2B-blue.svg?style=flat" /></a>
   <a href="https://jitpack.io/#mukeshsolanki/photofilter"> <img src="https://jitpack.io/v/mukeshsolanki/photofilter.svg" /></a>
   <a href="https://android-arsenal.com/details/1/3802"> <img src="https://img.shields.io/badge/Android%20Arsenal-Photo%20Filter-brightgreen.svg?style=flat" /></a>
   <a href="https://travis-ci.org/mukeshsolanki/photofilter"> <img src="https://travis-ci.org/mukeshsolanki/photofilter.svg?branch=master" /></a>

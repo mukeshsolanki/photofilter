@@ -1,9 +1,7 @@
 <h1 align="center">Photo Filter for Android</h1>
 <p align="center">
-  <a href="https://jitpack.io/#mukeshsolanki/photofilter"><img src="https://jitpack.io/v/mukeshsolanki/photofilter/month.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=14"> <img src="https://img.shields.io/badge/API-14%2B-blue.svg?style=flat" /></a>
+  <a class="badge-align" href="https://www.codacy.com/app/mukeshsolanki/photofilter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mukeshsolanki/photofilter&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/a4df9fd87fec408f9fe52641016205ae"/></a>
   <a href="https://jitpack.io/#mukeshsolanki/photofilter"> <img src="https://jitpack.io/v/mukeshsolanki/photofilter.svg" /></a>
-  <a href="https://android-arsenal.com/details/1/3802"> <img src="https://img.shields.io/badge/Android%20Arsenal-Photo%20Filter-brightgreen.svg?style=flat" /></a>
   <a href="https://travis-ci.org/mukeshsolanki/photofilter"> <img src="https://travis-ci.org/mukeshsolanki/photofilter.svg?branch=master" /></a>
   <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
   <a href="https://www.paypal.me/mukeshsolanki"> <img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>

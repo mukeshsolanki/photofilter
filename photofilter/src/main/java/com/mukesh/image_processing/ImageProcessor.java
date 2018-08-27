@@ -370,19 +370,15 @@ public class ImageProcessor {
         R = Color.red(pixel);
         G = Color.green(pixel);
         B = Color.blue(pixel);
-        switch (type) {
-          case ImageProcessingConstants.RED:
-            R = (int) (R * (1 + percent));
-            if (R > 255) R = 255;
-            break;
-          case ImageProcessingConstants.GREEN:
-            G = (int) (G * (1 + percent));
-            if (G > 255) G = 255;
-            break;
-          case ImageProcessingConstants.BLUE:
-            B = (int) (B * (1 + percent));
-            if (B > 255) B = 255;
-            break;
+        if (type == ImageProcessingConstants.RED) {
+          R = (int) (R * (1 + percent));
+          if (R > 255) R = 255;
+        } else if (type == ImageProcessingConstants.GREEN) {
+          G = (int) (G * (1 + percent));
+          if (G > 255) G = 255;
+        } else if (type == ImageProcessingConstants.BLUE) {
+          B = (int) (B * (1 + percent));
+          if (B > 255) B = 255;
         }
         bmOut.setPixel(x, y, Color.argb(A, R, G, B));
       }
@@ -443,7 +439,7 @@ public class ImageProcessor {
     int height = originalImage.getHeight();
     int[] pix = new int[width * height];
     originalImage.getPixels(pix, 0, width, 0, 0, width, height);
-    int RY, GY, BY, RYY, GYY, BYY, R, G, B, Y;
+    int RY, BY, RYY, GYY, BYY, R, G, B, Y;
     double angle = (ImageProcessingConstants.PI * (double) degree)
         / ImageProcessingConstants.HALF_CIRCLE_DEGREE;
     int S = (int) (ImageProcessingConstants.RANGE * Math.sin(angle));
@@ -455,7 +451,6 @@ public class ImageProcessor {
         int g = (pix[index] >> 8) & 0xff;
         int b = pix[index] & 0xff;
         RY = (70 * r - 59 * g - 11 * b) / 100;
-        GY = (-30 * r + 41 * g - 11 * b) / 100;
         BY = (-30 * r - 59 * g + 89 * b) / 100;
         Y = (30 * r + 59 * g + 11 * b) / 100;
         RYY = (S * BY + C * RY) / 256;

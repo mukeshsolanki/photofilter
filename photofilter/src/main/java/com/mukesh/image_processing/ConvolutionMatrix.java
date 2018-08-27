@@ -5,16 +5,15 @@ import android.graphics.Color;
 
 class ConvolutionMatrix {
   private static final int SIZE = 3;
-
-  double[][] Matrix;
-  double Factor = 1;
-  double Offset = 1;
+  public double[][] Matrix;
+  public double Factor = 1;
+  public double Offset = 1;
 
   ConvolutionMatrix(int size) {
     Matrix = new double[size][size];
   }
 
-  void setAll(double value) {
+  public void setAll(double value) {
     for (int x = 0; x < SIZE; ++x) {
       for (int y = 0; y < SIZE; ++y) {
         Matrix[x][y] = value;
@@ -22,13 +21,13 @@ class ConvolutionMatrix {
     }
   }
 
-  void applyConfig(double[][] config) {
+  public void applyConfig(double[][] config) {
     for (int x = 0; x < SIZE; ++x) {
       System.arraycopy(config[x], 0, Matrix[x], 0, SIZE);
     }
   }
 
-  static Bitmap computeConvolution3x3(Bitmap src, ConvolutionMatrix matrix) {
+  public static Bitmap computeConvolution3x3(Bitmap src, ConvolutionMatrix matrix) {
     int width = src.getWidth();
     int height = src.getHeight();
     Bitmap result = Bitmap.createBitmap(width, height, src.getConfig());

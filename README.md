@@ -4,10 +4,16 @@
   <a href="https://jitpack.io/#mukeshsolanki/photofilter"> <img src="https://jitpack.io/v/mukeshsolanki/photofilter.svg" /></a>
   <a href="https://circleci.com/gh/mukeshsolanki/photofilter"> <img src="https://circleci.com/gh/mukeshsolanki/photofilter.svg?style=shield" /></a>
   <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
-  <a href="https://www.paypal.me/mukeshsolanki"> <img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
-  <br /><br />A simple easy to use library that lets you edit pictures on the fly with easy. Photo filter lets you apply a large number of filters all while maintaining maximum image quality. Supports Android 2.3 and higher.
 </p>
 
+# Support Photo Filter for Android
+
+A simple easy to use library that lets you edit pictures on the fly with easy. Photo filter lets you apply a large number of filters all while maintaining maximum image quality. Supports Android 2.3 and higher. Photo filter is an independent project with ongoing development and support made possible thanks to donations made by [these awesome backers](BACKERS.md#sponsors). If you'd like to join them, please consider:
+
+- [Become a backer or sponsor on Patreon](https://www.patreon.com/mukeshsolanki).
+- [One-time donation via PayPal](https://www.paypal.me/mukeshsolanki)
+
+<a href="https://www.patreon.com/bePatron?c=935498" alt="Become a Patron"><img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" /></a>
 
 ## How to integrate into your app?
 Integrating the library into you app is extremely easy. A few changes in the build gradle and your all ready to use the library. Make the following changes.

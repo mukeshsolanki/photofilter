@@ -15,7 +15,6 @@ import com.mukesh.imageproccessing.filters.CrossProcess
 import com.mukesh.imageproccessing.filters.Documentary
 import com.mukesh.imageproccessing.filters.DuoTone
 import com.mukesh.imageproccessing.filters.FillLight
-import com.mukesh.imageproccessing.filters.Filter
 import com.mukesh.imageproccessing.filters.FishEye
 import com.mukesh.imageproccessing.filters.FlipHorizontally
 import com.mukesh.imageproccessing.filters.FlipVertically
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity(), OnProcessingCompletionListener, OnFilt
 
   override fun onFilterClicked(effectsThumbnail: EffectsThumbnail) {
     photoFilter?.applyEffect(
-        BitmapFactory.decodeResource(resources, R.drawable.car), effectsThumbnail.filter
+        BitmapFactory.decodeResource(resources, R.drawable.skull), effectsThumbnail.filter
     )
   }
 
@@ -59,12 +58,11 @@ class MainActivity : AppCompatActivity(), OnProcessingCompletionListener, OnFilt
 
   private fun initialize() {
     photoFilter = PhotoFilter(effectView, this)
-    photoFilter?.applyEffect(BitmapFactory.decodeResource(resources, R.drawable.car), None())
+    photoFilter?.applyEffect(BitmapFactory.decodeResource(resources, R.drawable.skull), None())
     effectsRecyclerView.layoutManager =
         LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
     effectsRecyclerView.setHasFixedSize(true)
-    effectsRecyclerView.adapter =
-        EffectsAdapter(getItems(), this@MainActivity)
+    effectsRecyclerView.adapter = EffectsAdapter(getItems(), this@MainActivity)
   }
 
   private fun getItems(): MutableList<EffectsThumbnail> {
@@ -78,7 +76,6 @@ class MainActivity : AppCompatActivity(), OnProcessingCompletionListener, OnFilt
         EffectsThumbnail("Documentary", Documentary()),
         EffectsThumbnail("Duo Tone", DuoTone()),
         EffectsThumbnail("Fill Light", FillLight()),
-        EffectsThumbnail("Filter", Filter()),
         EffectsThumbnail("Fisheye", FishEye()),
         EffectsThumbnail("Flip Horizontally", FlipHorizontally()),
         EffectsThumbnail("Flip Vertically", FlipVertically()),

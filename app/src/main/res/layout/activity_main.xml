@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
-  <Gallery
-      android:id="@+id/gallery"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      />
+  <android.opengl.GLSurfaceView
+    android:id="@+id/effectsview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 
   <ImageView
-      android:id="@+id/imageView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_below="@+id/gallery"
-      android:layout_gravity="center"
-      android:src="@drawable/skull"
-      />
+    android:id="@+id/result_image_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
 </RelativeLayout>

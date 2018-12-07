@@ -1,4 +1,4 @@
-package com.mukesh.image_processing.example;
+package com.mukesh.imageproccessing.example;
 
 import android.content.Context;
 import android.content.res.TypedArray;

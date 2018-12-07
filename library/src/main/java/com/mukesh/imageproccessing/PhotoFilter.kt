@@ -65,6 +65,12 @@ class PhotoFilter(
     mCurrentEffect = effect
   }
 
+  fun newBitmap(bitmap: Bitmap) {
+    this.bitmap = bitmap
+    mInitialized = false
+    effectsView.requestRender()
+  }
+
   override fun onSurfaceCreated(
     gl: GL10,
     config: EGLConfig
@@ -203,8 +209,6 @@ class PhotoFilter(
     val gl = egl.eglGetCurrentContext().gl as GL10
     val resultBitmap =
       createBitmapFromGLSurface(gl)!!
-    bitmap.recycle()
-    bitmap = resultBitmap
     bitmapReadyCallbacks.onBitmapReady(resultBitmap)
   }
 

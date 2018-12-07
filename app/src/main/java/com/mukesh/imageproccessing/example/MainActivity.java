@@ -12,7 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity implements BitmapReadyCallbacks {
   private GLSurfaceView mEffectView;
-  private PhotoFilter p;
+  private PhotoFilter photoFilter;
+  private boolean shouldApply = true;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -22,12 +23,17 @@ public class MainActivity extends AppCompatActivity implements BitmapReadyCallba
 
   private void initialize() {
     mEffectView = findViewById(R.id.effectsview);
-    p = new PhotoFilter(mEffectView,
+    photoFilter = new PhotoFilter(mEffectView,
         BitmapFactory.decodeResource(getResources(), R.drawable.skull), this);
-    p.setCurrentEffect(FILTERS.FLIP_VERTICALLY);
+    photoFilter.setCurrentEffect(FILTERS.FLIP_VERTICALLY);
   }
 
   @Override public void onBitmapReady(@NotNull final Bitmap bitmap) {
+    if (shouldApply) {
+      photoFilter.newBitmap(bitmap);
+      photoFilter.setCurrentEffect(FILTERS.DOCUMENTARY);
+      shouldApply = false;
+    }
     //try {
     //  String path = Environment.getExternalStorageDirectory().toString();
     //  OutputStream fOut;

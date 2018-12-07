@@ -8,7 +8,7 @@ import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.GLUtils
 import com.mukesh.imageproccessing.filters.AutoFix
-import com.mukesh.imageproccessing.filters.BlackAndWhite
+import com.mukesh.imageproccessing.filters.Highlight
 import com.mukesh.imageproccessing.filters.Brightness
 import com.mukesh.imageproccessing.filters.Contrast
 import com.mukesh.imageproccessing.filters.CrossProcess
@@ -123,7 +123,7 @@ class PhotoFilter(
         imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_AUTOFIX)
         imageEffect?.setParameter("scale", (currentEffect as AutoFix).scale)
       }
-      is BlackAndWhite -> (currentEffect as BlackAndWhite).let {
+      is Highlight -> (currentEffect as Highlight).let {
         imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_BLACKWHITE)
         imageEffect?.setParameter("black", it.black)
         imageEffect?.setParameter("white", it.white)

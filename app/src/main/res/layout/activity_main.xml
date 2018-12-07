@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:background="@android:color/white">
 
   <android.opengl.GLSurfaceView
-    android:id="@+id/effectsview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-
-  <ImageView
-    android:id="@+id/result_image_view"
+    android:id="@+id/effectView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone" />
+    android:layout_above="@+id/effectsRecyclerView" />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/effectsRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -41,10 +41,9 @@ import javax.microedition.khronos.opengles.GL10
 
 class PhotoFilter(
   var effectsView: GLSurfaceView,
-  var bitmap: Bitmap,
-  var bitmapReadyCallbacks: BitmapReadyCallbacks
+  var onProcessingCompletionListener: OnProcessingCompletionListener
 ) : GLSurfaceView.Renderer {
-
+  private var bitmap: Bitmap? = null
   private val mTexRenderer = TextureRenderer()
   private var mInitialized = false
   private var mEffectContext: EffectContext? = null
@@ -58,16 +57,16 @@ class PhotoFilter(
     effectsView.setEGLContextClientVersion(2)
     effectsView.setRenderer(this)
     effectsView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
-    setCurrentEffect(NONE)
   }
 
-  fun setCurrentEffect(effect: FILTERS) {
-    mCurrentEffect = effect
-  }
-
-  fun newBitmap(bitmap: Bitmap) {
+  fun applyEffect(
+    bitmap: Bitmap,
+    effect: FILTERS
+  ) {
+    this.bitmap?.recycle()
     this.bitmap = bitmap
     mInitialized = false
+    mCurrentEffect = effect
     effectsView.requestRender()
   }
 
@@ -100,15 +99,17 @@ class PhotoFilter(
   }
 
   private fun loadTextures() {
-    GLES20.glGenTextures(2, mTextures, 0)
-    mImageWidth = bitmap.width
-    mImageHeight = bitmap.height
-    mTexRenderer.updateTextureSize(mImageWidth, mImageHeight)
+    if (bitmap != null) {
+      GLES20.glGenTextures(2, mTextures, 0)
+      mImageWidth = bitmap?.width!!
+      mImageHeight = bitmap?.height!!
+      mTexRenderer.updateTextureSize(mImageWidth, mImageHeight)
 
-    GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextures[0])
-    GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0)
+      GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextures[0])
+      GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0)
 
-    GLToolbox.initTexParams()
+      GLToolbox.initTexParams()
+    }
   }
 
   private fun initEffect() {
@@ -207,9 +208,8 @@ class PhotoFilter(
   private fun captureBitmap() {
     val egl = EGLContext.getEGL() as EGL10
     val gl = egl.eglGetCurrentContext().gl as GL10
-    val resultBitmap =
-      createBitmapFromGLSurface(gl)!!
-    bitmapReadyCallbacks.onBitmapReady(resultBitmap)
+    val resultBitmap = createBitmapFromGLSurface(gl)!!
+    onProcessingCompletionListener.onProcessingComplete(resultBitmap)
   }
 
   private fun createBitmapFromGLSurface(

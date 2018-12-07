@@ -4,7 +4,7 @@ import android.opengl.GLES20
 
 object GLToolbox {
 
-  fun loadShader(
+  private fun loadShader(
     shaderType: Int,
     source: String
   ): Int {

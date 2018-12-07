@@ -1,37 +1,37 @@
 package com.mukesh.imageproccessing
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.media.effect.Effect
 import android.media.effect.EffectContext
 import android.media.effect.EffectFactory
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.GLUtils
-import com.mukesh.imageproccessing.FILTERS.AUTO_FIX
-import com.mukesh.imageproccessing.FILTERS.BLACK_AND_WHITE
-import com.mukesh.imageproccessing.FILTERS.BRIGHTNESS
-import com.mukesh.imageproccessing.FILTERS.CONTRAST
-import com.mukesh.imageproccessing.FILTERS.CROSS_PROCESS
-import com.mukesh.imageproccessing.FILTERS.DOCUMENTARY
-import com.mukesh.imageproccessing.FILTERS.DUO_TONE
-import com.mukesh.imageproccessing.FILTERS.FILL_LIGHT
-import com.mukesh.imageproccessing.FILTERS.FISH_EYE
-import com.mukesh.imageproccessing.FILTERS.FLIP_HORIZONTALLY
-import com.mukesh.imageproccessing.FILTERS.FLIP_VERTICALLY
-import com.mukesh.imageproccessing.FILTERS.GRAIN
-import com.mukesh.imageproccessing.FILTERS.GRAYSCALE
-import com.mukesh.imageproccessing.FILTERS.LOMOISH
-import com.mukesh.imageproccessing.FILTERS.NEGATIVE
-import com.mukesh.imageproccessing.FILTERS.NONE
-import com.mukesh.imageproccessing.FILTERS.POSTERIZE
-import com.mukesh.imageproccessing.FILTERS.ROTATE
-import com.mukesh.imageproccessing.FILTERS.SATURATE
-import com.mukesh.imageproccessing.FILTERS.SEPIA
-import com.mukesh.imageproccessing.FILTERS.SHARPEN
-import com.mukesh.imageproccessing.FILTERS.TEMPERATURE
-import com.mukesh.imageproccessing.FILTERS.TINT
-import com.mukesh.imageproccessing.FILTERS.VIGNETTE
+import com.mukesh.imageproccessing.filters.AutoFix
+import com.mukesh.imageproccessing.filters.BlackAndWhite
+import com.mukesh.imageproccessing.filters.Brightness
+import com.mukesh.imageproccessing.filters.Contrast
+import com.mukesh.imageproccessing.filters.CrossProcess
+import com.mukesh.imageproccessing.filters.Documentary
+import com.mukesh.imageproccessing.filters.DuoTone
+import com.mukesh.imageproccessing.filters.FillLight
+import com.mukesh.imageproccessing.filters.Filter
+import com.mukesh.imageproccessing.filters.FishEye
+import com.mukesh.imageproccessing.filters.FlipHorizontally
+import com.mukesh.imageproccessing.filters.FlipVertically
+import com.mukesh.imageproccessing.filters.Grain
+import com.mukesh.imageproccessing.filters.Grayscale
+import com.mukesh.imageproccessing.filters.Lomoish
+import com.mukesh.imageproccessing.filters.Negative
+import com.mukesh.imageproccessing.filters.None
+import com.mukesh.imageproccessing.filters.Posterize
+import com.mukesh.imageproccessing.filters.Rotate
+import com.mukesh.imageproccessing.filters.Saturate
+import com.mukesh.imageproccessing.filters.Sepia
+import com.mukesh.imageproccessing.filters.Sharpen
+import com.mukesh.imageproccessing.filters.Temperature
+import com.mukesh.imageproccessing.filters.Tint
+import com.mukesh.imageproccessing.filters.Vignette
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import javax.microedition.khronos.egl.EGL10
@@ -44,14 +44,14 @@ class PhotoFilter(
   var onProcessingCompletionListener: OnProcessingCompletionListener
 ) : GLSurfaceView.Renderer {
   private var bitmap: Bitmap? = null
-  private val mTexRenderer = TextureRenderer()
-  private var mInitialized = false
-  private var mEffectContext: EffectContext? = null
-  private var mCurrentEffect: FILTERS = NONE
-  private val mTextures = IntArray(2)
-  private var mImageWidth: Int = 0
-  private var mImageHeight: Int = 0
-  private var mEffect: Effect? = null
+  private val textureRenderer = TextureRenderer()
+  private var initialized = false
+  private var effectContext: EffectContext? = null
+  private var currentEffect: Filter = None()
+  private val textures = IntArray(2)
+  private var imageWidth: Int = 0
+  private var imageHeight: Int = 0
+  private var imageEffect: Effect? = null
 
   init {
     effectsView.setEGLContextClientVersion(2)
@@ -61,12 +61,12 @@ class PhotoFilter(
 
   fun applyEffect(
     bitmap: Bitmap,
-    effect: FILTERS
+    effect: Filter
   ) {
     this.bitmap?.recycle()
     this.bitmap = bitmap
-    mInitialized = false
-    mCurrentEffect = effect
+    initialized = false
+    currentEffect = effect
     effectsView.requestRender()
   }
 
@@ -81,17 +81,17 @@ class PhotoFilter(
     width: Int,
     height: Int
   ) {
-    mTexRenderer.updateViewSize(width, height)
+    textureRenderer.updateViewSize(width, height)
   }
 
   override fun onDrawFrame(gl: GL10) {
-    if (!mInitialized) {
-      mEffectContext = EffectContext.createWithCurrentGlContext()
-      mTexRenderer.init()
+    if (!initialized) {
+      effectContext = EffectContext.createWithCurrentGlContext()
+      textureRenderer.init()
       loadTextures()
-      mInitialized = true
+      initialized = true
     }
-    if (mCurrentEffect != NONE) {
+    if (currentEffect !is None) {
       initEffect()
       applyEffect()
     }
@@ -100,12 +100,12 @@ class PhotoFilter(
 
   private fun loadTextures() {
     if (bitmap != null) {
-      GLES20.glGenTextures(2, mTextures, 0)
-      mImageWidth = bitmap?.width!!
-      mImageHeight = bitmap?.height!!
-      mTexRenderer.updateTextureSize(mImageWidth, mImageHeight)
+      GLES20.glGenTextures(2, textures, 0)
+      imageWidth = bitmap?.width!!
+      imageHeight = bitmap?.height!!
+      textureRenderer.updateTextureSize(imageWidth, imageHeight)
 
-      GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextures[0])
+      GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0])
       GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0)
 
       GLToolbox.initTexParams()
@@ -113,94 +113,96 @@ class PhotoFilter(
   }
 
   private fun initEffect() {
-    val effectFactory = mEffectContext?.factory
-    if (mEffect != null) {
-      mEffect?.release()
+    val effectFactory = effectContext?.factory
+    if (imageEffect != null) {
+      imageEffect?.release()
     }
-    when (mCurrentEffect) {
-      NONE -> return
-      AUTO_FIX -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_AUTOFIX)
-        mEffect?.setParameter("scale", 0.5f)
+    when (currentEffect) {
+      is None -> return
+      is AutoFix -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_AUTOFIX)
+        imageEffect?.setParameter("scale", (currentEffect as AutoFix).scale)
       }
-      BLACK_AND_WHITE -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_BLACKWHITE)
-        mEffect?.setParameter("black", .1f)
-        mEffect?.setParameter("white", .7f)
+      is BlackAndWhite -> (currentEffect as BlackAndWhite).let {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_BLACKWHITE)
+        imageEffect?.setParameter("black", it.black)
+        imageEffect?.setParameter("white", it.white)
       }
-      BRIGHTNESS -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_BRIGHTNESS)
-        mEffect?.setParameter("brightness", 2.0f)
+      is Brightness -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_BRIGHTNESS)
+        imageEffect?.setParameter("brightness", (currentEffect as Brightness).brightness)
       }
-      CONTRAST -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_CONTRAST)
-        mEffect?.setParameter("contrast", 1.4f)
+      is Contrast -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_CONTRAST)
+        imageEffect?.setParameter("contrast", (currentEffect as Contrast).contrast)
       }
-      CROSS_PROCESS -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_CROSSPROCESS)
-      DOCUMENTARY -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_DOCUMENTARY)
-      DUO_TONE -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_DUOTONE)
-        mEffect?.setParameter("first_color", Color.YELLOW)
-        mEffect?.setParameter("second_color", Color.DKGRAY)
+      is CrossProcess -> imageEffect =
+          effectFactory?.createEffect(EffectFactory.EFFECT_CROSSPROCESS)
+      is Documentary -> imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_DOCUMENTARY)
+      is DuoTone -> (currentEffect as DuoTone).let {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_DUOTONE)
+        imageEffect?.setParameter("first_color", it.firstColor)
+        imageEffect?.setParameter("second_color", it.secondColor)
       }
-      FILL_LIGHT -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FILLLIGHT)
-        mEffect?.setParameter("strength", .8f)
+      is FillLight -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FILLLIGHT)
+        imageEffect?.setParameter("strength", (currentEffect as FillLight).strength)
       }
-      FISH_EYE -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FISHEYE)
-        mEffect?.setParameter("scale", .5f)
+      is FishEye -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FISHEYE)
+        imageEffect?.setParameter("scale", (currentEffect as FishEye).scale)
       }
-      FLIP_VERTICALLY -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FLIP)
-        mEffect?.setParameter("vertical", true)
+      is FlipVertically -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FLIP)
+        imageEffect?.setParameter("vertical", true)
       }
-      FLIP_HORIZONTALLY -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FLIP)
-        mEffect?.setParameter("horizontal", true)
+      is FlipHorizontally -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_FLIP)
+        imageEffect?.setParameter("horizontal", true)
       }
-      GRAIN -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_GRAIN)
-        mEffect?.setParameter("strength", 1.0f)
+      is Grain -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_GRAIN)
+        imageEffect?.setParameter("strength", (currentEffect as Grain).strength)
       }
-      GRAYSCALE -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_GRAYSCALE)
-      LOMOISH -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_LOMOISH)
-      NEGATIVE -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_NEGATIVE)
-      POSTERIZE -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_POSTERIZE)
-      ROTATE -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_ROTATE)
-        mEffect?.setParameter("angle", 180)
+      is Grayscale -> imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_GRAYSCALE)
+      is Lomoish -> imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_LOMOISH)
+      is Negative -> imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_NEGATIVE)
+      is Posterize -> imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_POSTERIZE)
+      is Rotate -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_ROTATE)
+        imageEffect?.setParameter("angle", (currentEffect as Rotate).angle)
       }
-      SATURATE -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_SATURATE)
-        mEffect?.setParameter("scale", .5f)
+      is Saturate -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_SATURATE)
+        imageEffect?.setParameter("scale", (currentEffect as Saturate).scale)
       }
-      SEPIA -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_SEPIA)
-      SHARPEN -> mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_SHARPEN)
-      TEMPERATURE -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_TEMPERATURE)
-        mEffect?.setParameter("scale", .9f)
+      is Sepia -> imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_SEPIA)
+      is Sharpen -> imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_SHARPEN)
+      is Temperature -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_TEMPERATURE)
+        imageEffect?.setParameter("scale", (currentEffect as Temperature).scale)
       }
-      TINT -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_TINT)
-        mEffect?.setParameter("tint", Color.MAGENTA)
+      is Tint -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_TINT)
+        imageEffect?.setParameter("tint", (currentEffect as Tint).tint)
       }
-      VIGNETTE -> {
-        mEffect = effectFactory?.createEffect(EffectFactory.EFFECT_VIGNETTE)
-        mEffect?.setParameter("scale", .5f)
+      is Vignette -> {
+        imageEffect = effectFactory?.createEffect(EffectFactory.EFFECT_VIGNETTE)
+        imageEffect?.setParameter("scale", (currentEffect as Vignette).scale)
       }
+      else -> return
     }
   }
 
   private fun applyEffect() {
-    mEffect?.apply(mTextures[0], mImageWidth, mImageHeight, mTextures[1])
+    imageEffect?.apply(textures[0], imageWidth, imageHeight, textures[1])
   }
 
   private fun renderResult() {
-    if (mCurrentEffect == NONE) {
-      mTexRenderer.renderTexture(mTextures[0])
+    if (currentEffect is None) {
+      textureRenderer.renderTexture(textures[0])
     } else {
-      mTexRenderer.renderTexture(mTextures[1])
+      textureRenderer.renderTexture(textures[1])
     }
     captureBitmap()
   }
@@ -216,11 +218,11 @@ class PhotoFilter(
     gl: GL10
   ): Bitmap? {
     val screenshotSize = effectsView.width * effectsView.height
-    val bb = ByteBuffer.allocateDirect(screenshotSize * 4);
-    bb.order(ByteOrder.nativeOrder());
+    val bb = ByteBuffer.allocateDirect(screenshotSize * 4)
+    bb.order(ByteOrder.nativeOrder())
     gl.glReadPixels(
         0, 0, effectsView.width, effectsView.height, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, bb
-    );
+    )
     val pixelsBuffer = IntArray(screenshotSize)
     bb.asIntBuffer()
         .get(pixelsBuffer)

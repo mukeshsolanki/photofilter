@@ -5,15 +5,14 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import com.mukesh.imageproccessing.FILTERS;
 import com.mukesh.imageproccessing.OnProcessingCompletionListener;
 import com.mukesh.imageproccessing.PhotoFilter;
+import com.mukesh.imageproccessing.filters.None;
 import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity implements OnProcessingCompletionListener {
   private GLSurfaceView mEffectView;
   private PhotoFilter photoFilter;
-  private boolean shouldApply = true;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -25,13 +24,10 @@ public class MainActivity extends AppCompatActivity implements OnProcessingCompl
     mEffectView = findViewById(R.id.effectsview);
     photoFilter = new PhotoFilter(mEffectView, this);
     photoFilter.applyEffect(BitmapFactory.decodeResource(getResources(), R.drawable.skull),
-        FILTERS.FLIP_VERTICALLY);
+        new None());
   }
 
   @Override public void onProcessingComplete(@NotNull final Bitmap bitmap) {
-    if (shouldApply) {
-      photoFilter.applyEffect(bitmap, FILTERS.DOCUMENTARY);
-      shouldApply = false;
-    }
+    // Do anything with the bitmap save it or add another effect to it
   }
 }

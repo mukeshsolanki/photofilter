@@ -78,16 +78,13 @@ That's pretty much it and your all wrapped up.
 
 ## Screenshots
 ### Original
-![Original 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car.png)
-![Original 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull.png)
+![Original 1](screen-shot-1.jpg)
 
 ### Result
-![Result 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-applyShadingFilter1.png)
-![Result 2](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-boost2.png)
-![Result 3](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull-createContrast1.png)
-![Result 4](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull-createShadow.png)
-
-You can check out more results [here](https://github.com/mukeshsolanki/photofilter/tree/master/screenshots)
+![Result 1](screen-shot-2.jpg)
+![Result 2](screen-shot-3.jpg)
+![Result 3](screen-shot-4.jpg)
+![Result 4](screen-shot-5.jpg)
 
 ## Author
 Maintained by [Mukesh Solanki](https://www.github.com/mukeshsolanki)

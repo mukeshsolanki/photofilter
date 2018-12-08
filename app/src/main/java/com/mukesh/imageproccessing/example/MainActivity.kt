@@ -1,11 +1,18 @@
 package com.mukesh.imageproccessing.example
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.Toast
 import com.mukesh.imageproccessing.OnProcessingCompletionListener
 import com.mukesh.imageproccessing.PhotoFilter
 import com.mukesh.imageproccessing.filters.AutoFix
@@ -34,13 +41,20 @@ import com.mukesh.imageproccessing.filters.Tint
 import com.mukesh.imageproccessing.filters.Vignette
 import kotlinx.android.synthetic.main.activity_main.effectView
 import kotlinx.android.synthetic.main.activity_main.effectsRecyclerView
+import kotlinx.android.synthetic.main.activity_main.saveButton
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.util.Date
 
 class MainActivity : AppCompatActivity(), OnProcessingCompletionListener, OnFilterClickListener {
-
+  private val REQUEST_PERMISSION: Int = 10001
+  private lateinit var result: Bitmap
   private var photoFilter: PhotoFilter? = null
 
   override fun onProcessingComplete(bitmap: Bitmap) {
     // Do anything with the bitmap save it or add another effect to it
+    result = bitmap
   }
 
   override fun onFilterClicked(effectsThumbnail: EffectsThumbnail) {
@@ -53,7 +67,6 @@ class MainActivity : AppCompatActivity(), OnProcessingCompletionListener, OnFilt
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     initialize()
-
   }
 
   private fun initialize() {
@@ -63,6 +76,56 @@ class MainActivity : AppCompatActivity(), OnProcessingCompletionListener, OnFilt
         LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
     effectsRecyclerView.setHasFixedSize(true)
     effectsRecyclerView.adapter = EffectsAdapter(getItems(), this@MainActivity)
+    saveButton.setOnClickListener {
+      checkPermissionAndSaveImage()
+    }
+  }
+
+  private fun checkPermissionAndSaveImage() {
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+          != PackageManager.PERMISSION_GRANTED
+      ) {
+        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION)
+      } else {
+        saveImage()
+      }
+    } else {
+      saveImage()
+    }
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<out String>,
+    grantResults: IntArray
+  ) {
+    when (requestCode) {
+      REQUEST_PERMISSION -> {
+        if (grantResults[0] === PackageManager.PERMISSION_GRANTED) {
+          saveImage()
+        } else {
+          Toast.makeText(this@MainActivity, "Permission Denied", Toast.LENGTH_SHORT)
+              .show()
+        }
+        return
+      }
+    }
+  }
+
+  private fun saveImage() {
+    val path = Environment.getExternalStorageDirectory()
+        .toString()
+    val fOut: OutputStream?
+    val fileName = Date().time
+    val file = File(path, "$fileName.jpg")
+    fOut = FileOutputStream(file)
+    result.compress(Bitmap.CompressFormat.JPEG, 85, fOut)
+    fOut.flush()
+    fOut.close()
+    MediaStore.Images.Media.insertImage(contentResolver, file.absolutePath, file.name, file.name)
+    Toast.makeText(this@MainActivity, "ImageSaved", Toast.LENGTH_SHORT)
+        .show()
   }
 
   private fun getItems(): MutableList<EffectsThumbnail> {

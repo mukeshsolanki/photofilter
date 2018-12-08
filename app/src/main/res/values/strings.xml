@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">image-processing</string>
+  <string name="save">Save</string>
 </resources>

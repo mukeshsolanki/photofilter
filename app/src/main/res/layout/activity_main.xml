@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <Button
+    android:id="@+id/saveButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="8dp"
+    android:text="@string/save" />
+
+  <android.opengl.GLSurfaceView
+    android:id="@+id/effectView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:layout_above="@+id/effectsRecyclerView" />
 
-  <Gallery
-      android:id="@+id/gallery"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      />
-
-  <ImageView
-      android:id="@+id/imageView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_below="@+id/gallery"
-      android:layout_gravity="center"
-      android:src="@drawable/skull"
-      />
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/effectsRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true" />
 </RelativeLayout>

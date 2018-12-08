@@ -39,57 +39,52 @@ dependencies {
 Okay seems like you integrated the library in your project but **how do you use it**? Well its really easy just follow the steps below.
 
 ```
- ImageProcessor imageProcessor = new ImageProcessor();
- 
- imageProcessor.doInvert(bitmap);
+ private var photoFilter = PhotoFilter(effectView, object: OnProcessingCompletionListener{
+  override fun onProcessingComplete(bitmap: Bitmap) {
+   // Do anything with the bitmap save it or add another effect to it
+  }
+ })
+
+ photoFilter?.applyEffect(bitmap, AutoFix())
 ```
 
 That's pretty much it and your all wrapped up.
 
-## Supported Filters (Exposed Methods)
-* doHighlightImage
-* doInvert
-* doGreyScale
-* doGamma
-* doColorFilter
-* createSepiaToningEffect
-* decreaseColorDepth
-* createContrast
-* rotate
-* doBrightness
-* applyGaussianBlur
-* createShadow
-* sharpen
-* applyMeanRemoval
-* smooth
-* emboss
-* engrave
-* boost
-* roundCorner
-* waterMark
-* flip
-* tintImage
-* applyFleaEffect
-* applyBlackFilter
-* applySnowEffect
-* applyShadingFilter
-* applySaturationFilter
-* applyHueFilter
-* applyReflection
-* replaceColor
+## Supported Filters
+* AutoFix
+* Brightness
+* Contrast
+* CrossProcess
+* Documentary
+* DuoTone
+* Fill-Light
+* FishEye
+* Flip Horizontally
+* Flip Vertically
+* Grain
+* Grayscale
+* Highlight
+* Lomoish
+* Negative
+* None
+* Posterize
+* Rotate
+* Saturate
+* Sepia
+* Sharpen
+* Temperature
+* Tint
+* Vignette
 
 ## Screenshots
 ### Original
-![Original 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car.png)
-![Original 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull.png)
+![Original 1](screen-shot-1.jpg)
 
 ### Result
-![Result 1](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-applyShadingFilter1.png)
-![Result 2](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Car-boost2.png)
-![Result 3](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull-createContrast1.png)
-![Result 4](https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screenshots/Skull-createShadow.png)
-
-You can check out more results [here](https://github.com/mukeshsolanki/photofilter/tree/master/screenshots)
+![Result 1](screen-shot-2.jpg)
+![Result 2](screen-shot-3.jpg)
+![Result 3](screen-shot-4.jpg)
+![Result 4](screen-shot-5.jpg)
 
 ## Author
 Maintained by [Mukesh Solanki](https://www.github.com/mukeshsolanki)
@@ -102,17 +97,23 @@ Maintained by [Mukesh Solanki](https://www.github.com/mukeshsolanki)
 
 ## License
 ```
-Copyright 2018 Mukesh Solanki
+Copyright (c) 2018 Mukesh Solanki
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-http://www.apache.org/licenses/LICENSE-2.0
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```

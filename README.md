@@ -78,13 +78,13 @@ That's pretty much it and your all wrapped up.
 
 ## Screenshots
 ### Original
-![Original 1](screen-shot-1.jpg)
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screen-shot-1.jpg" height="480" width="270"/>
 
 ### Result
-![Result 1](screen-shot-2.jpg)
-![Result 2](screen-shot-3.jpg)
-![Result 3](screen-shot-4.jpg)
-![Result 4](screen-shot-5.jpg)
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screen-shot-2.jpg" height="480" width="270"/>
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screen-shot-3.jpg" height="480" width="270"/>
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screen-shot-4.jpg" height="480" width="270"/>
+<img src="https://raw.githubusercontent.com/mukeshsolanki/photofilter/master/screen-shot-5.jpg" height="480" width="270"/>
 
 ## Author
 Maintained by [Mukesh Solanki](https://www.github.com/mukeshsolanki)

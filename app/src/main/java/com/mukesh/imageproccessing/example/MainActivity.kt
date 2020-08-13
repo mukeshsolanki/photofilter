@@ -9,10 +9,10 @@ import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mukesh.imageproccessing.OnProcessingCompletionListener
 import com.mukesh.imageproccessing.PhotoFilter
 import com.mukesh.imageproccessing.filters.AutoFix
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(), OnProcessingCompletionListener, OnFilt
   ) {
     when (requestCode) {
       REQUEST_PERMISSION -> {
-        if (grantResults[0] === PackageManager.PERMISSION_GRANTED) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
           saveImage()
         } else {
           Toast.makeText(this@MainActivity, "Permission Denied", Toast.LENGTH_SHORT)
